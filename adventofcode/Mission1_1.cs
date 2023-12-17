@@ -42,11 +42,7 @@ namespace adventofcode
                 ints.Add(int.Parse(result));
             }
 
-            int sum = 0;
-            foreach (var i in ints)
-            {
-                sum += i;
-            }
+            int sum = ints.Sum();
 
             Console.WriteLine("Output Mission 1.1: " + sum);
         }
