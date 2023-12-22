@@ -18,13 +18,13 @@ namespace adventofcode
             // Parse lines to scratchCard objects
             foreach (var line in input)
             {
-                string name = line.Split(':')[0];
+                int index = int.Parse(line.Split(':')[0].Replace("Card", "").Trim());
                 string winningNumbers = line.Split(':')[1].Split('|')[0].Trim();
                 string myNumbers = line.Split(':')[1].Split('|')[1].Trim();
 
                 cards.Add(new ScratchCard()
                 {
-                    Name = name,
+                    Index = index,
                     WinningNumbers = Regex.Split(winningNumbers, @"\s+").Select(x => int.Parse(x)).ToList(),
                     MyNumbers = Regex.Split(myNumbers, @"\s+").Select(x => int.Parse(x)).ToList(),
                 });
@@ -51,9 +51,9 @@ namespace adventofcode
 
     }
 
-    internal class ScratchCard
+    public class ScratchCard
     {
-        public string Name { get; set; }
+        public int Index { get; set; }
         public List<int> WinningNumbers { get; set; }
         public List<int> MyNumbers { get; set; }
     }
