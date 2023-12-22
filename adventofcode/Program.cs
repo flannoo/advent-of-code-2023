@@ -8,5 +8,6 @@ Mission2_1.Run(Path.Combine(inputFolder, "Mission2.txt"));
 Mission2_2.Run(Path.Combine(inputFolder, "Mission2.txt"));
 Mission3_1.Run(Path.Combine(inputFolder, "Mission3.txt"));
 Mission3_2.Run(Path.Combine(inputFolder, "Mission3.txt"));
+Mission4_1.Run(Path.Combine(inputFolder, "Mission4.txt"));
 
 Console.Read();
