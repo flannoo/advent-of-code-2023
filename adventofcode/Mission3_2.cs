@@ -72,41 +72,35 @@ namespace adventofcode
             List<int> gears = new List<int>();
 
             // for each * character check if there are multiple numbers around it
-            foreach(var gear in partCharacters)
+            foreach (var gear in partCharacters)
             {
                 // Create index range to check for surrounding characters
                 int gearStartIndex = gear.Index - 1;
                 int gearEndIndex = gear.Index + 1;
 
                 // Check if a number exists in the previous line in that index range
-                var surroundedOnPreviousLine = new List<PartNumber>();                
-                foreach(var partNumber in partNumbers.Where(x => x.LineNumber == gear.LineNumber - 1))
+                var surroundedOnPreviousLine = new List<PartNumber>();
+                foreach (var partNumber in partNumbers.Where(x => x.LineNumber == gear.LineNumber - 1))
                 {
-                    // example 57. - the number is located on the left of the index of the * character (so index is the last char of the number)
-                    var leftIndex = partNumber.Index + partNumber.Value.ToString().Length;
+                    var startIndex = partNumber.Index;
+                    var endIndex = partNumber.Index + partNumber.Value.ToString().Length - 1;
 
-                    // example .57 - the number is located on the right of the index of the * character (so index is the first char of the number)
-                    var rightIndex = partNumber.Index;
-
-                    // if the index of the character is in the range of the gear, add it to the list
-                    if (leftIndex == gearStartIndex || rightIndex == gearEndIndex)
+                    // if one of the numbers is in the range of the gear, add it to the list
+                    if ((gearStartIndex >= startIndex && gearStartIndex <= endIndex) || (gearEndIndex >= startIndex && gearEndIndex <= endIndex) || (gearStartIndex <= startIndex && gearEndIndex >= endIndex))
                     {
                         surroundedOnPreviousLine.Add(partNumber);
                     }
                 }
 
                 // Check if a number exists in the current line in that index range
-                var surroundedOnCurrentLine = new List<PartNumber>();                
+                var surroundedOnCurrentLine = new List<PartNumber>();
                 foreach (var partNumber in partNumbers.Where(x => x.LineNumber == gear.LineNumber))
                 {
-                    // example 57. - the number is located on the left of the index of the * character (so index is the last char of the number)
-                    var leftIndex = partNumber.Index + partNumber.Value.ToString().Length;
-
-                    // example .57 - the number is located on the right of the index of the * character (so index is the first char of the number)
-                    var rightIndex = partNumber.Index;
+                    var startIndex = partNumber.Index;
+                    var endIndex = partNumber.Index + partNumber.Value.ToString().Length - 1;
 
                     // if the index of the character is in the range of the gear, add it to the list
-                    if (leftIndex == gearStartIndex || rightIndex == gearEndIndex)
+                    if (startIndex == gearEndIndex || endIndex == gearStartIndex)
                     {
                         surroundedOnCurrentLine.Add(partNumber);
                     }
@@ -116,22 +110,16 @@ namespace adventofcode
                 var surroundedOnNextLine = new List<PartNumber>();
                 foreach (var partNumber in partNumbers.Where(x => x.LineNumber == gear.LineNumber + 1))
                 {
-                    int index = partNumber.Index;
+                    var startIndex = partNumber.Index;
+                    var endIndex = partNumber.Index + partNumber.Value.ToString().Length - 1;
 
-                    // loop over each character in partnumber
-                    foreach (var character in partNumber.Value.ToString())
+                    // check if partnumber is in the range of gearStartIndex or gearEndIndex
+                    if ((gearStartIndex >= startIndex && gearStartIndex <= endIndex) || (gearEndIndex >= startIndex && gearEndIndex <= endIndex) || (gearStartIndex <= startIndex && gearEndIndex >= endIndex))
                     {
-                        // if the index of the character is in the range of the gear, add it to the list
-                        if (index >= gearStartIndex && index <= gearEndIndex)
-                        {
-                            surroundedOnPreviousLine.Add(partNumber);
-                            break;
-                        }
-
-                        index++;
+                        surroundedOnPreviousLine.Add(partNumber);
                     }
                 }
-                
+
                 var surrounded = (surroundedOnPreviousLine.Select(p => p.Value).Concat(surroundedOnCurrentLine.Select(p => p.Value)).Concat(surroundedOnNextLine.Select(p => p.Value)));
 
                 // If there are exactly 2 numbers around the * character, multiply them and add them to the list of gears
